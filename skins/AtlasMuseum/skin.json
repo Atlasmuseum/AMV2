@@ -5,6 +5,7 @@
 	"namemsg": "skinname-atlasmuseum",
 	"license-name": "GPL-2.0+",
 	"type": "skin",
+	"manifest_version": 2,
 	"ValidSkinNames": {
 		"atlasmuseum": "AtlasMuseum"
 	},
@@ -18,7 +19,9 @@
 	"ResourceModules": {
 		"skins.atlasmuseum": {
 			"class": "ResourceLoaderSkinModule",
-			"position": "top",
+			"features": {
+				"interface": true
+			},
 			"styles": {
 				"resources/screen.css": { "media": "screen" }
 			}
