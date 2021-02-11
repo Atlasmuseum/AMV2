@@ -21,6 +21,7 @@ if (!class_exists('Map')) {
       $update = getRequestParameter('update');
       $origin = getRequestParameter('origin');
       $nature = getRequestParameter('nature');
+      $compress = getRequestParameter('compress');
 
       if (!is_null($origin))
         $origin = explode('|', $origin);
@@ -32,12 +33,18 @@ if (!class_exists('Map')) {
       else
         $nature = [];
 
-      return [
+      if (!is_null($compress))
+        $compress = (strtolower($compress) == 'true');
+      else
+        $compress = false;
+
+        return [
         'success' => 1,
         'payload' => [
           'update' => $update,
           'origin' => $origin,
-          'nature' => $nature
+          'nature' => $nature,
+          'compress' => $compress
         ]
       ];
     }
@@ -269,6 +276,32 @@ if (!class_exists('Map')) {
       return $data;
     }
 
+    protected static function compress($unc) {
+      $i;$c;$wc;
+      $w = "";
+      $dictionary = array();
+      $result = array();
+      $dictSize = 256;
+      for ($i = 0; $i < 256; $i += 1) {
+          $dictionary[chr($i)] = $i;
+      }
+      for ($i = 0; $i < strlen($unc); $i++) {
+          $c = $unc[$i];
+          $wc = $w.$c;
+          if (array_key_exists($w.$c, $dictionary)) {
+              $w = $w.$c;
+          } else {
+              array_push($result,$dictionary[$w]);
+              $dictionary[$wc] = $dictSize++;
+              $w = (string)$c;
+          }
+      }
+      if ($w !== "") {
+          array_push($result,$dictionary[$w]);
+      }
+      return implode(",",$result);
+    }
+
     /**
      * Récupère les données en vue de leur affichage sur une carte
      *
@@ -284,7 +317,14 @@ if (!class_exists('Map')) {
           $dataWD = self::getMapwD();
         return array_merge($dataAM, $dataWD);
       } else {
-        return self::getMap($payload['nature']);
+        $data = self::getMap($payload['nature']);
+        if ($payload['compress']) {
+          return [
+            'compress' => true,
+            'data' => gzcompress(json_encode($data))
+          ];
+        }
+        return $data;
       }
     }
   }

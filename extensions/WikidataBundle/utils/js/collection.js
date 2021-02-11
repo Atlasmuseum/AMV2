@@ -33,7 +33,7 @@ $(document).ready(function() {
 initMap = function (data) {
   $('#map-loader').hide()
   artworks_map = data
-  console.log(data)
+  // console.log(data)
   createMap(data)
   createList(data, 'collectionTable')
 }
@@ -246,7 +246,8 @@ createPopup = function (map, overlay, container, content, closer) {
       else
         link = "Spécial:Wikidata/" + id
 
-      let text = "<p><b><a href=\"" + link + "\">" + title + "</a></b></p><hr />"
+      //let text = "<p><b><a href=\"" + link + "\">" + title + "</a></b></p><hr />"
+      let text = "<p><b><a href=\"" + link + "\">" + title + "</a></b></p><div id=\"map-image-placeholder\"></div><hr />"
 
       text += '<table><tbody>'
 
@@ -263,9 +264,34 @@ createPopup = function (map, overlay, container, content, closer) {
       text += '</tbody></table>'
 
       content.innerHTML = text
+
+      loadImage(article ? article : id, nature === "wikidata")
+
       overlay.setPosition(coordinate)
     }
   });
+}
+
+loadImage = function(article, wikidata) {
+  let getArtworkUrl = 'http://atlasmuseum.net/w/amapi/index.php?action=amgetartwork&article=' + encodeURIComponent(article.replace('http://atlasmuseum.net/wiki/', ''))
+  if (wikidata) {
+    getArtworkUrl += '&origin=wikidata'
+  }
+  $.getJSON(getArtworkUrl)
+    .then(function(result) {
+      if (result && result.entities && result.entities.data && result.entities.data.image_principale) {
+        const imageData = result.entities.data.image_principale
+        const getImageUrl = 'http://atlasmuseum.net/w/amapi/index.php?action=amgetimage&image=' + encodeURIComponent(imageData.value[0].value) + '&width=200&origin=' + imageData.value[0].origin
+        $.getJSON(getImageUrl)
+          .then(function(resultImage) {
+            const replaceImg = '<img src="' + resultImage.entities.thumbnail + '" />'
+            document.getElementById('map-image-placeholder').innerHTML = replaceImg
+          })
+      } else {
+        const replaceImg = '<img src="http://atlasmuseum.net/w/images/thumb/5/5f/Image-manquante.jpg/200px-Image-manquante.jpg" />'
+        document.getElementById('map-image-placeholder').innerHTML = replaceImg
+      }
+    })
 }
 
 changeMarkers = function() {

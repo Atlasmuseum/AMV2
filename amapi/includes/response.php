@@ -73,10 +73,15 @@
      * Envoie un code statut HTML et écrit la réponse
      */
     public function sendResponse() {
-      if (!is_null($this->statusCode) && is_int($this->statusCode)) {
-        http_response_code($this->statusCode);
+      if (!is_null($this->response['entities']['compress'])) {
+        print $this->response['entities']['data'];
+      } else {
+        header("Content-Type: application/json; charset=UTF-8");
+        if (!is_null($this->statusCode) && is_int($this->statusCode)) {
+          http_response_code($this->statusCode);
+        }
+        print $this->getResponseJSON();
       }
-      print $this->getResponseJSON();
     }
   }
 

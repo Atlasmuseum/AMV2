@@ -59,7 +59,9 @@ class Artwork {
       print ' loading';
     print '">';
     if (!is_null($image)) {
-      print '<div class="image-loader" data-origin="' . $image->value[0]->origin . '" data-value="' . $image->value[0]->value . '" data-width="420" data-legend="true"><div class="loader loader-big"><span></span><span></span><span></span><span></span></div></div>';
+      $imageValue = str_replace('"', '&quot;', $image->value[0]->value);
+      
+      print '<div class="image-loader" data-origin="' . $image->value[0]->origin . '" data-value="' . $imageValue . '" data-width="420" data-legend="true"><div class="loader loader-big"><span></span><span></span><span></span><span></span></div></div>';
     } else {
       print '<a href="' . MISSING_IMAGE_LINK . '" class="image"><img alt="" src="' . MISSING_IMAGE_FILE . '" class="thumbimage" srcset="" /></a>';
     }

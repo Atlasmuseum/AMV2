@@ -189,6 +189,7 @@ function loadImages() {
     const value = $(imageDiv).data('value')
     const width = $(imageDiv).data('width') ? $(imageDiv).data('width') : 192
     const legend = ($(imageDiv).data('legend') && $(imageDiv).data('legend') === true)
+    console.log('Loading image', value)
     const params = {
       action: 'amgetimage',
       image: value,

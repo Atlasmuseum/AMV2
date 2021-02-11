@@ -118,7 +118,7 @@ class ArtworkEditTest {
       <tr>
         <th><?php print $title; ?><?php if ($mandatory) print ' <span class="mandatory">*</span>'; ?></th>
         <td id="input_<?php print $key; ?>_cell">
-          <input type="text" id="input_<?php print $key; ?>" value="<?php print $imageFile; ?>" name="Edit[<?php print $key; ?>]" class="createboxInput createboxInputMainImage" size="45">
+          <input type="text" id="input_<?php print $key; ?>" value="<?php print str_replace('"', '&quot;', $imageFile); ?>" name="Edit[<?php print $key; ?>]" class="createboxInput createboxInputMainImage" size="45">
           <a data-fancybox data-type="iframe" data-src="<?php print BASE_MAIN; ?>index.php?title=Sp%C3%A9cial:UploadWindow&amp;pfInputID=input_<?php print $key; ?>" href="javascript:;">Importer un fichier</a>
           <br />
           <input id="input_checkbox_<?php print $key; ?>" name="Edit[<?php print $key; ?>_origin]" type="checkbox" class="createboxInput" <?php if ($imageOrigin === 'commons') print 'checked'; ?>><i>Cette image provient de Wikimedia Commons</i>

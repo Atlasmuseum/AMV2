@@ -195,11 +195,35 @@ document.addEventListener("DOMContentLoaded", function(event) {
       text += '</tbody></table>'
 
       $("#map-popup-content").html(text);
+
+      loadImage(article ? article : id, nature === "wikidata")
+
       overlay.setPosition(coordinate);
     }
   });
-
 });
+
+loadImage = function(article, wikidata) {
+  let getArtworkUrl = 'http://atlasmuseum.net/w/amapi/index.php?action=amgetartwork&article=' + encodeURIComponent(article)
+  if (wikidata) {
+    getArtworkUrl += '&origin=wikidata'
+  }
+  $.getJSON(getArtworkUrl)
+    .then(function(result) {
+      if (result && result.entities && result.entities.data && result.entities.data.image_principale) {
+        const imageData = result.entities.data.image_principale
+        const getImageUrl = 'http://atlasmuseum.net/w/amapi/index.php?action=amgetimage&image=' + encodeURIComponent(imageData.value[0].value) + '&width=200&origin=' + imageData.value[0].origin
+        $.getJSON(getImageUrl)
+          .then(function(resultImage) {
+            const replaceImg = '<img src="' + resultImage.entities.thumbnail + '" />'
+            document.getElementById('map-image-placeholder').innerHTML = replaceImg
+          })
+      } else {
+        const replaceImg = '<img src="http://atlasmuseum.net/w/images/thumb/5/5f/Image-manquante.jpg/200px-Image-manquante.jpg" />'
+        document.getElementById('map-image-placeholder').innerHTML = replaceImg
+      }
+    })
+}
 
 changeMarkers = function() {
   clusterSource.getSource().clear();
