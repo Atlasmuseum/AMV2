@@ -25,6 +25,11 @@ $actions = [
     'class' => Artwork::class,
     'noData' => 'No data found for artwork.'
   ],
+  'amgetartists' => [
+    'include' => 'artists.php',
+    'class' => Artists::class,
+    'noData' => 'No data found for artists.'
+  ],
   'amgetartist' => [
     'include' => 'artist.php',
     'class' => Artist::class,
