@@ -55,6 +55,11 @@ $actions = [
     'class' => ArtworksByArtists::class,
     'noData' => 'No data found.'
   ],
+  'amgetsearch' => [
+    'include' => 'search.php',
+    'class' => Search::class,
+    'noData' => 'No data found.'
+  ],
 ];
 
 if (!class_exists('Router')) {
