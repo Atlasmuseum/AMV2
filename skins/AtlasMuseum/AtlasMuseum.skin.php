@@ -30,20 +30,11 @@ class SkinAtlasMuseum extends SkinTemplate {
 			'skins.atlasmuseum.js'
 		) );
 		/* 'skins.atlasmuseum.js' is the name you used in your skin.json file */
-	}
-
-	/**
-	 * Add CSS via ResourceLoader
-	 *
-	 * @param $out OutputPage
-	 */
-	function setupSkinUserCss( OutputPage $out ) {
-		parent::setupSkinUserCss( $out );
 		$out->addStyle('http://fonts.googleapis.com/css?family=Open+Sans:100,200,400,700|Oswald:100,200,400,700|Libre+Franklin:100,200,400,700', 'screen');
 		$out->addStyle('http://publicartmuseum.net/w/skins/AtlasMuseum/Fonts/font.css', 'screen');
 		/*$out->addScriptFile('http://publicartmuseum.net/w/skins/AtlasMuseum/resources/atlasmuseum.js');*/
 		$out->addModuleStyles( array(
-			'mediawiki.skinning.interface', 'skins.atlasmuseum'
+			'skins.atlasmuseum'
 			/* 'skins.atlasmuseum' is the name you used in your skin.json file */
 		) );
 	}
