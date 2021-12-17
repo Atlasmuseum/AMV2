@@ -13,7 +13,13 @@ class AtlasMuseumTemplate extends BaseTemplate {
 		$nav = $this->data['content_navigation'];
 
 		if ( $this->config->get( 'VectorUseIconWatch' ) ) {
-			$mode = $this->getSkin()->getUser()->isWatched( $this->getSkin()->getRelevantTitle() )
+			$user = $this->getSkin()->getUser();
+			$instance = MediaWiki\MediaWikiServices::getInstance();
+			$isWatched = $instance->getWatchedItemStore()->isWatched(
+				$user,
+				$this->getSkin()->getRelevantTitle()
+			);
+			$mode = $isWatched
 				? 'unwatch'
 				: 'watch';
 
